@@ -1,9 +1,14 @@
+<!doctype html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>فروشگاه پوشاک نخ</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;600;800;900&family=IBM+Plex+Mono:wght@500&display=swap">
 <style>
-/* Layout: RTL storefront — compact masthead with indigo-dye band, filter row, product grid, slide-in cart drawer */
+/* Layout: RTL storefront — sticky masthead, season collection tiles, filter row, photo grid; #p{id} opens a product page; slide-in cart drawer */
 :root{
   --bg:#f3f4f7; --surface:#ffffff; --fg:#191c2b; --muted:#5f6478;
   --line:#dcdfe8; --accent:#26307a; --accent-ink:#ffffff; --madder:#b23a2e;
@@ -22,8 +27,9 @@
 *{box-sizing:border-box}
 body{background:var(--bg);color:var(--fg);font-family:var(--f-body);font-size:15px;line-height:1.7;direction:rtl;padding-inline:16px;padding-block:0 48px}
 .wrap{max-width:1180px;margin-inline:auto}
+a{color:inherit;text-decoration:none}
 button{font:inherit;color:inherit;cursor:pointer}
-button:focus-visible,select:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+button:focus-visible,select:focus-visible,a:focus-visible,input:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
 
 header.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;background:var(--bg);border-bottom:1px solid var(--line);margin-inline:-16px;padding-inline:16px}
 .top .wrap{display:flex;align-items:center;justify-content:space-between;gap:16px;padding-block:14px}
@@ -32,39 +38,93 @@ header.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;backgroun
 .cart-btn{display:flex;align-items:center;gap:8px;border:1px solid var(--line);background:var(--surface);border-radius:999px;padding:6px 14px}
 .cart-btn .count{background:var(--accent);color:var(--accent-ink);border-radius:999px;min-width:24px;height:24px;display:grid;place-items:center;font-size:.8rem;font-weight:600}
 
-.hero{margin-block:28px 8px;display:grid;grid-template-columns:1.2fr 1fr;gap:24px;align-items:end}
-.hero h1{font-family:var(--f-display);font-weight:900;font-size:clamp(2rem,5vw,3.4rem);line-height:1.25;margin:0;text-wrap:balance}
+/* photos */
+.ph{position:relative;background:var(--swatch-bg);border-radius:var(--r);overflow:hidden;aspect-ratio:4/5;max-width:100%}
+.ph img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .5s ease}
+.ph .alt{position:absolute;inset:0;display:grid;place-items:center;padding:16px;text-align:center;color:var(--muted);font-size:.85rem}
+
+/* home */
+.hero{margin-block:28px 20px;display:grid;grid-template-columns:1.2fr 1fr;gap:24px;align-items:end}
+.hero h1{font-family:var(--f-display);font-weight:900;font-size:clamp(2rem,5vw,3.2rem);line-height:1.25;margin:0;text-wrap:balance}
 .hero h1 span{color:var(--accent)}
-.hero p{color:var(--muted);margin:0;max-width:44ch}
-.band{margin-block:20px 28px;display:flex;flex-wrap:wrap;gap:8px 24px;padding:12px 18px;border-radius:var(--r);background:var(--accent);color:var(--accent-ink);font-size:.9rem}
+.hero p{color:var(--muted);margin:0;max-width:46ch}
+.collections{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:20px}
+.col{position:relative;border:0;padding:0;border-radius:var(--r);overflow:hidden;text-align:right;background:var(--swatch-bg)}
+.col .ph{aspect-ratio:16/10;border-radius:0}
+.col span{position:absolute;inset-inline:0;bottom:0;padding:28px 16px 12px;background:linear-gradient(transparent,rgb(10 12 25 / .75));color:#fff;font-weight:800;font-size:1.15rem}
+.col span small{display:block;font-weight:400;font-size:.8rem;opacity:.85}
+.col:hover img{transform:scale(1.04)}
+.band{margin-block:0 28px;display:flex;flex-wrap:wrap;gap:8px 24px;padding:12px 18px;border-radius:var(--r);background:var(--accent);color:var(--accent-ink);font-size:.9rem}
 .band b{font-weight:800}
 
-.filters{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin-bottom:20px}
-.chip{border:1px solid var(--line);background:transparent;border-radius:999px;padding:5px 16px;font-size:.9rem}
+.filters{display:flex;flex-direction:column;gap:10px;margin-bottom:20px}
+.row{display:flex;flex-wrap:wrap;align-items:center;gap:8px}
+.row .lbl{font-size:.82rem;color:var(--muted);min-width:56px}
+.chip{border:1px solid var(--line);background:transparent;border-radius:999px;padding:4px 14px;font-size:.88rem}
 .chip[aria-pressed="true"]{background:var(--fg);color:var(--bg);border-color:var(--fg)}
-.filters .sort{margin-inline-start:auto;display:flex;align-items:center;gap:8px;color:var(--muted);font-size:.9rem}
-select{font:inherit;color:var(--fg);background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:4px 10px}
+.tools{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+.tools input{flex:1;min-width:0;font:inherit;color:var(--fg);background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:6px 12px}
+select{font:inherit;color:var(--fg);background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:5px 10px}
+.found{font-size:.85rem;color:var(--muted)}
 
-.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:20px}
-.card{display:flex;flex-direction:column;gap:10px;min-width:0}
-.pic{position:relative;aspect-ratio:4/5;max-width:100%;background:var(--swatch-bg);border-radius:var(--r);display:grid;place-items:center;overflow:hidden}
-.pic svg{width:72%;height:auto;transition:transform .35s ease}
-.card:hover .pic svg{transform:translateY(-4px) rotate(-1.5deg)}
-.tag{position:absolute;top:10px;right:10px;background:var(--madder);color:#fff;font-size:.75rem;font-weight:600;padding:2px 10px;border-radius:999px}
-.meta{display:flex;justify-content:space-between;align-items:baseline;gap:8px}
-.meta h3{margin:0;font-size:1rem;font-weight:600}
-.fabric{font-size:.82rem;color:var(--muted);margin:0}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:24px 20px}
+.card{display:flex;flex-direction:column;gap:6px;min-width:0}
+.card:hover img{transform:scale(1.04)}
+.tag{position:absolute;top:10px;right:10px;background:var(--madder);color:#fff;font-size:.75rem;font-weight:600;padding:2px 10px;border-radius:999px;z-index:1}
+.season{position:absolute;bottom:10px;right:10px;background:var(--surface);color:var(--fg);font-size:.72rem;padding:1px 10px;border-radius:999px;z-index:1}
+.card h3{margin:4px 0 0;font-size:1rem;font-weight:600}
+.fabric{font-size:.8rem;color:var(--muted);margin:0}
 .price{font-weight:800;white-space:nowrap}
 .price s{font-weight:400;color:var(--muted);font-size:.8rem;margin-inline-end:6px}
 .dots{display:flex;gap:6px}
-.dot{width:18px;height:18px;border-radius:50%;border:2px solid var(--surface);outline:1px solid var(--line);padding:0}
-.dot[aria-pressed="true"]{outline:2px solid var(--fg)}
+.dot{width:16px;height:16px;border-radius:50%;border:2px solid var(--surface);outline:1px solid var(--line);padding:0}
+.none{grid-column:1/-1;text-align:center;color:var(--muted);padding:48px 0}
+
+/* product page */
+.crumbs{margin-block:20px;font-size:.85rem;color:var(--muted);display:flex;gap:8px;flex-wrap:wrap}
+.crumbs a:hover{color:var(--accent)}
+.pd{display:grid;grid-template-columns:1.05fr 1fr;gap:36px;align-items:start}
+#main{position:relative}
+.gallery{display:flex;flex-direction:column;gap:10px;min-width:0}
+.thumbs{display:flex;gap:8px}
+.thumbs button{width:72px;padding:0;border:2px solid transparent;border-radius:8px;overflow:hidden;background:none}
+.thumbs button[aria-pressed="true"]{border-color:var(--accent)}
+.thumbs .ph{border-radius:6px}
+.info{min-width:0;display:flex;flex-direction:column;gap:16px}
+.info h1{font-family:var(--f-display);font-weight:900;font-size:clamp(1.6rem,3.5vw,2.2rem);line-height:1.3;margin:0;text-wrap:balance}
+.pills{display:flex;gap:6px;flex-wrap:wrap}
+.pill{font-size:.75rem;border:1px solid var(--line);border-radius:999px;padding:1px 10px;color:var(--muted)}
+.info .price{font-size:1.4rem}
+.material{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:12px 14px;font-size:.92rem}
+.material b{color:var(--accent)}
+.opt h4{margin:0 0 6px;font-size:.88rem;font-weight:600}
+.opt h4 span{font-weight:400;color:var(--muted)}
+.swatches{display:flex;gap:8px;flex-wrap:wrap}
+.swatch{width:30px;height:30px;border-radius:50%;border:3px solid var(--surface);outline:1px solid var(--line);padding:0}
+.swatch[aria-pressed="true"]{outline:2px solid var(--fg)}
 .sizes{display:flex;gap:6px;flex-wrap:wrap}
-.size{font-family:var(--f-mono);font-size:.78rem;min-width:36px;padding:3px 6px;border:1px solid var(--line);border-radius:6px;background:var(--surface)}
-.size[aria-pressed="true"]{border-color:var(--accent);color:var(--accent);font-weight:600}
+.size{font-family:var(--f-mono);font-size:.85rem;min-width:46px;padding:5px 10px;border:1px solid var(--line);border-radius:8px;background:var(--surface)}
+.size[aria-pressed="true"]{border-color:var(--accent);color:var(--accent);font-weight:600;box-shadow:inset 0 0 0 1px var(--accent)}
 .size:disabled{opacity:.35;text-decoration:line-through;cursor:not-allowed}
-.add{border:0;background:var(--accent);color:var(--accent-ink);border-radius:8px;padding:9px;font-weight:600}
+.buy{display:flex;gap:10px;align-items:stretch}
+.qty{display:flex;align-items:center;gap:4px;border:1px solid var(--line);border-radius:8px;padding:4px;background:var(--surface)}
+.qty button{width:28px;height:28px;border:0;background:var(--bg);border-radius:6px;line-height:1}
+.qty span{min-width:24px;text-align:center}
+.add{flex:1;border:0;background:var(--accent);color:var(--accent-ink);border-radius:8px;padding:11px;font-weight:600}
 .add:hover{filter:brightness(1.1)}
+.add:disabled{opacity:.45;cursor:not-allowed}
+.section h3{font-size:1rem;margin:0 0 8px}
+.section p{margin:0;color:var(--muted)}
+.tbl{overflow-x:auto}
+table{width:100%;border-collapse:collapse;font-size:.88rem}
+th,td{padding:8px 10px;border-bottom:1px solid var(--line);text-align:right;vertical-align:top}
+.specs th{width:38%;color:var(--muted);font-weight:400}
+.sizetbl th{font-weight:600;color:var(--muted);background:var(--surface)}
+.sizetbl td{font-variant-numeric:tabular-nums}
+.perks{display:grid;grid-template-columns:1fr 1fr;gap:8px;font-size:.82rem;color:var(--muted)}
+.perks div{border:1px dashed var(--line);border-radius:8px;padding:8px 10px}
+.related{margin-top:48px}
+.related h2{font-size:1.2rem;margin:0 0 14px}
 
 /* drawer */
 .scrim{position:fixed;inset:0;background:rgb(10 12 25 / .45);z-index:40}
@@ -74,14 +134,11 @@ select{font:inherit;color:var(--fg);background:var(--surface);border:1px solid v
 .drawer h2{margin:0 0 8px;font-size:1.2rem;display:flex;justify-content:space-between;align-items:center}
 .x{border:0;background:none;font-size:1.4rem;line-height:1}
 .items{flex:1;overflow-y:auto;display:flex;flex-direction:column;gap:14px;padding-block:10px}
-.item{display:grid;grid-template-columns:64px 1fr auto;gap:12px;align-items:center}
-.item .thumb{background:var(--swatch-bg);border-radius:8px;aspect-ratio:1;display:grid;place-items:center}
-.item .thumb svg{width:70%}
-.item .info{min-width:0;font-size:.88rem}
-.item .info b{display:block;font-weight:600}
-.item .info span{color:var(--muted);font-size:.8rem}
-.qty{display:flex;align-items:center;gap:4px}
-.qty button{width:26px;height:26px;border:1px solid var(--line);background:var(--bg);border-radius:6px;line-height:1}
+.item{display:grid;grid-template-columns:60px 1fr auto;gap:12px;align-items:center}
+.item .ph{border-radius:6px}
+.item .meta{min-width:0;font-size:.86rem}
+.item .meta b{display:block;font-weight:600}
+.item .meta span{color:var(--muted);font-size:.78rem}
 .empty{color:var(--muted);text-align:center;margin-top:40px}
 .sum{border-top:1px solid var(--line);padding-top:12px;display:flex;flex-direction:column;gap:6px;font-size:.9rem}
 .sum div{display:flex;justify-content:space-between}
@@ -92,53 +149,29 @@ select{font:inherit;color:var(--fg);background:var(--surface);border:1px solid v
 .checkout:disabled{opacity:.4;cursor:not-allowed}
 .note{font-size:.82rem;color:var(--muted)}
 
-.toast{position:fixed;bottom:calc(20px + env(safe-area-inset-bottom,0px));left:50%;transform:translateX(-50%);background:var(--fg);color:var(--bg);padding:8px 18px;border-radius:999px;font-size:.9rem;z-index:60}
+.toast{position:fixed;bottom:calc(20px + env(safe-area-inset-bottom,0px));left:50%;transform:translateX(-50%);background:var(--fg);color:var(--bg);padding:8px 18px;border-radius:999px;font-size:.9rem;z-index:60;max-width:calc(100% - 32px);text-align:center}
 footer{margin-top:56px;border-top:1px solid var(--line);padding-top:20px;color:var(--muted);font-size:.85rem;display:flex;flex-wrap:wrap;gap:8px 24px;justify-content:space-between}
 
-@media (max-width:720px){.hero{grid-template-columns:1fr}.filters .sort{margin-inline-start:0;width:100%}}
+@media (max-width:800px){.hero,.pd{grid-template-columns:1fr}.collections{grid-template-columns:1fr 1fr 1fr;gap:8px}.col span{font-size:.95rem;padding:20px 10px 8px}.col span small{display:none}}
+@media (max-width:480px){.grid{grid-template-columns:1fr 1fr;gap:18px 12px}.card h3{font-size:.9rem}.perks{grid-template-columns:1fr}}
 @media (prefers-reduced-motion:reduce){*{transition:none!important}}
 </style>
+</head>
+<body>
 
 <header class="top">
   <div class="wrap">
-    <div class="logo">نخ <small>پوشاک نخی و کتان</small></div>
+    <a class="logo" href="#">نخ <small>پوشاک چهارفصل</small></a>
     <button class="cart-btn" id="openCart" aria-label="باز کردن سبد خرید">سبد خرید <span class="count" id="count">۰</span></button>
   </div>
 </header>
 
-<main class="wrap">
-  <section class="hero">
-    <h1>لباس‌هایی از <span>پنبه و کتان</span> که هر روز می‌پوشید</h1>
-    <p>دوخت ایران، پارچهٔ صددرصد طبیعی. سایزها را از جدول هر محصول انتخاب کنید و تا ۷ روز امکان تعویض دارید.</p>
-  </section>
+<main class="wrap" id="app"></main>
 
-  <div class="band">
-    <span><b>ارسال رایگان</b> برای خرید بالای ۲٬۰۰۰٬۰۰۰ تومان</span>
-    <span><b>۷ روز</b> ضمانت تعویض سایز</span>
-    <span><b>پرداخت در محل</b> در تهران</span>
-  </div>
-
-  <div class="filters" role="toolbar" aria-label="دسته‌بندی">
-    <button class="chip" data-cat="all" aria-pressed="true">همه</button>
-    <button class="chip" data-cat="men" aria-pressed="false">مردانه</button>
-    <button class="chip" data-cat="women" aria-pressed="false">زنانه</button>
-    <button class="chip" data-cat="unisex" aria-pressed="false">یونی‌سکس</button>
-    <label class="sort" for="sort">مرتب‌سازی:
-      <select id="sort">
-        <option value="new">جدیدترین</option>
-        <option value="low">ارزان‌ترین</option>
-        <option value="high">گران‌ترین</option>
-      </select>
-    </label>
-  </div>
-
-  <section class="grid" id="grid" aria-live="polite"></section>
-
-  <footer>
-    <span>فروشگاه نخ · نمونه‌کار طراحی سایت</span>
-    <span>پشتیبانی: ۰۲۱-۱۲۳۴۵۶۷۸ · شنبه تا پنجشنبه ۹ تا ۱۸</span>
-  </footer>
-</main>
+<div class="wrap"><footer>
+  <span>فروشگاه نخ · نمونه‌کار طراحی سایت · عکس‌ها از Unsplash</span>
+  <span>پشتیبانی: ۰۲۱-۱۲۳۴۵۶۷۸ · شنبه تا پنجشنبه ۹ تا ۱۸</span>
+</footer></div>
 
 <div class="scrim" id="scrim" hidden></div>
 <aside class="drawer" id="drawer" aria-label="سبد خرید" aria-hidden="true">
@@ -156,67 +189,235 @@ footer{margin-top:56px;border-top:1px solid var(--line);padding-top:20px;color:v
 <div class="toast" id="toast" hidden></div>
 
 <script>
-const SHAPES={
-  tee:'<path d="M60 30 L85 20 Q100 36 115 20 L140 30 L175 62 L155 84 L140 74 L140 192 L60 192 L60 74 L45 84 L25 62 Z"/>',
-  shirt:'<path d="M60 30 L85 18 L100 40 L115 18 L140 30 L172 70 L168 150 L150 150 L142 80 L142 196 L58 196 L58 80 L50 150 L32 150 L28 70 Z"/><path d="M100 40 V196" stroke="rgb(0 0 0 / .25)" stroke-width="2" fill="none"/><g fill="rgb(255 255 255 / .7)"><circle cx="100" cy="70" r="3"/><circle cx="100" cy="100" r="3"/><circle cx="100" cy="130" r="3"/><circle cx="100" cy="160" r="3"/></g>',
-  hoodie:'<path d="M62 40 Q100 -4 138 40 L176 72 L172 156 L150 156 L146 92 L146 198 L54 198 L54 92 L50 156 L28 156 L24 72 Z"/><path d="M78 40 Q100 66 122 40" stroke="rgb(0 0 0 / .3)" stroke-width="3" fill="none"/><rect x="72" y="140" width="56" height="30" rx="6" fill="rgb(0 0 0 / .15)"/>',
-  pants:'<path d="M60 18 L140 18 L152 202 L112 202 L100 82 L88 202 L48 202 Z"/><path d="M60 32 H140" stroke="rgb(0 0 0 / .25)" stroke-width="2"/>',
-  dress:'<path d="M80 18 L120 18 L126 72 L168 204 L32 204 L74 72 Z"/><path d="M74 72 H126" stroke="rgb(0 0 0 / .25)" stroke-width="3"/>',
-  coat:'<path d="M64 24 L86 16 L100 44 L114 16 L136 24 L172 62 L166 176 L148 176 L144 96 L148 208 L52 208 L56 96 L52 176 L34 176 L28 62 Z"/><path d="M100 44 V208" stroke="rgb(0 0 0 / .25)" stroke-width="2"/><path d="M86 16 L100 44 L94 90 M114 16 L100 44 L106 90" stroke="rgb(0 0 0 / .2)" stroke-width="2" fill="none"/>'
-};
-const svg=(shape,color)=>`<svg viewBox="0 0 200 220" aria-hidden="true"><g fill="${color}">${SHAPES[shape]}</g></svg>`;
+const IMG=(id,w=600,h=750)=>`https://images.unsplash.com/photo-${id}?auto=format&fit=crop&w=${w}&h=${h}&q=75`;
+const CATS={men:'مردانه',women:'زنانه',unisex:'یونی‌سکس',acc:'اکسسوری'};
+const SEASONS={autumn:'پاییزی',winter:'زمستانی',summer:'تابستانی',all:'چهارفصل'};
+const S4={S:1,M:1,L:1,XL:1};
+const c=(n,h)=>({n,h});
+const BLACK=c('مشکی','#1d1d20'),WHITE=c('سفید','#f3f3ef'),CREAM=c('کرم','#e5ddcb'),NAVY=c('سرمه‌ای','#26304d');
 
 const PRODUCTS=[
-  {id:1,name:'تی‌شرت نخی ساده',fabric:'پنبه ۱۸۰ گرم، یقه گرد',cat:'unisex',shape:'tee',price:690000,colors:['#f2f2ee','#1f2333','#7d8f6a'],sizes:{S:1,M:1,L:1,XL:1}},
-  {id:2,name:'هودی دورس',fabric:'دورس پنبه، داخل کرکی',cat:'unisex',shape:'hoodie',price:1890000,old:2290000,colors:['#3d4a8c','#a8a29a','#2b2b2b'],sizes:{S:0,M:1,L:1,XL:1}},
-  {id:3,name:'پیراهن کتان آستین بلند',fabric:'کتان شسته، دکمه صدفی',cat:'men',shape:'shirt',price:1450000,colors:['#c9d6e8','#e9e1d3','#5b6b4e'],sizes:{S:1,M:1,L:1,XL:0}},
-  {id:4,name:'شلوار جین راسته',fabric:'دنیم ۱۲ اونس، رنگ ایندیگو',cat:'men',shape:'pants',price:1690000,colors:['#2c3f6e','#4f6694','#1c1c22'],sizes:{S:1,M:1,L:1,XL:1}},
-  {id:5,name:'مانتو کتان بلند',fabric:'کتان، جیب‌دار، کمربند پارچه‌ای',cat:'women',shape:'coat',price:2350000,colors:['#b9a88a','#2e3a52','#8a4b3c'],sizes:{S:1,M:1,L:0,XL:1}},
-  {id:6,name:'پیراهن زنانه تابستانی',fabric:'ویسکوز نخی، بندی',cat:'women',shape:'dress',price:1290000,old:1590000,colors:['#c55a46','#e7d9bd','#3f5a7a'],sizes:{S:1,M:1,L:1,XL:0}},
-  {id:7,name:'شلوار کتان گشاد',fabric:'کتان، کمر کش',cat:'women',shape:'pants',price:1190000,colors:['#d8cdb8','#55606e','#9c7b5c'],sizes:{S:1,M:1,L:1,XL:1}},
-  {id:8,name:'تی‌شرت اورسایز طرح‌دار',fabric:'پنبه ۲۲۰ گرم، چاپ سیلک',cat:'men',shape:'tee',price:840000,colors:['#2b2b2b','#d9d4c7','#8c2f2a'],sizes:{S:0,M:1,L:1,XL:1}}
+ {id:1,name:'کاپشن پفی کوتاه',cat:'unisex',season:'winter',type:'top',price:3890000,old:4490000,img:['1557418669-db3f781a58c0','1561778233-89714b6f2033'],colors:[BLACK,c('سبز زیتونی','#4d5a3a')],sizes:{S:0,M:1,L:1,XL:1},
+  fabric:'رویه نایلون ضدآب، لایی الیاف پلی‌استر',comp:'رویه: ۱۰۰٪ نایلون ریپ‌استاپ ضدآب · لایی: ۱۰۰٪ الیاف پلی‌استر ۲۰۰ گرمی',
+  extra:[['گرمای مناسب','تا ۵- درجه سانتی‌گراد'],['آستر','تافتهٔ نرم'],['جیب','۲ جیب زیپ‌دار بیرونی، ۱ جیب داخلی'],['کلاه','ندارد، یقه ایستاده']],fit:'معمولی، قد تا روی باسن',care:'شستشو با آب سرد، بدون اتو و بدون خشک‌کن',origin:'ایران',
+  desc:'کاپشن سبک و گرم برای روزهای سرد شهر. رویهٔ ضدآب جلوی باران و برف سبک را می‌گیرد و لایی ۲۰۰ گرمی بدون سنگینی گرما را نگه می‌دارد.'},
+ {id:2,name:'پالتو پشمی بلند',cat:'women',season:'winter',type:'top',price:5450000,img:['1539533113208-f6df8cc8b543'],colors:[c('شتری','#9a6b43'),c('طوسی','#6d6d70'),BLACK],sizes:{S:1,M:1,L:1,XL:0},
+  fabric:'۷۰٪ پشم، ۳۰٪ پلی‌آمید',comp:'۷۰٪ پشم گوسفند · ۳۰٪ پلی‌آمید',
+  extra:[['وزن پارچه','۵۵۰ گرم بر متر مربع'],['آستر','ویسکوز ساتن'],['قد','تا زیر زانو (حدود ۱۰۵ سانتی‌متر)'],['بسته‌شدن','دکمه تک‌ردیفه']],fit:'آزاد، مناسب پوشیدن روی بافت',care:'فقط خشک‌شویی',origin:'ایران',
+  desc:'پالتوی کلاسیک با پارچهٔ پشمی ضخیم و آستر ساتن. برش ساده و قد بلند آن را برای محل کار و بیرون رفتن مناسب می‌کند.'},
+ {id:3,name:'بافت یقه‌اسکی',cat:'unisex',season:'winter',type:'top',price:1950000,img:['1574201635302-388dd92a4c3f','1610901157620-340856d0a50f'],colors:[c('طوسی روشن','#a7a6a2'),CREAM,NAVY],sizes:S4,
+  fabric:'۵۰٪ پشم مرینو، ۵۰٪ اکریلیک',comp:'۵۰٪ پشم مرینو · ۵۰٪ اکریلیک',
+  extra:[['نوع بافت','کش‌باف درشت، ۷ گیج'],['یقه','اسکی دولا']],fit:'کمی گشاد',care:'دست‌شویی با آب ولرم، خشک کردن به‌صورت خوابیده',origin:'ایران',
+  desc:'بافت نرم و گرم که پوست را نمی‌خاراند. یقهٔ دولا را می‌شود بالا داد یا برگرداند.'},
+ {id:4,name:'کلاه بافت لبه‌برگردان',cat:'acc',season:'winter',type:'one',price:390000,img:['1576871337632-b9aef4c17ab9','1618354691792-d1d42acfd860'],colors:[BLACK,c('خردلی','#c9962e'),c('زرشکی','#7a2630')],sizes:{'فری‌سایز':1},
+  fabric:'۱۰۰٪ اکریلیک نرم',comp:'۱۰۰٪ اکریلیک ضدپرز',
+  extra:[['دور سر','۵۴ تا ۶۰ سانتی‌متر'],['نوع بافت','کش‌باف دولا']],fit:'لبه برگردان، اندازهٔ آزاد',care:'شستشو با دست',origin:'ایران',
+  desc:'کلاه بافت ساده که با هر کاپشن و پالتویی ست می‌شود.'},
+ {id:5,name:'هودی دورس کرکی',cat:'unisex',season:'winter',type:'top',price:2190000,old:2590000,img:['1677538537484-324385aff147','1663573688938-2b3e7ea2ab33'],colors:[BLACK,c('طوسی ملانژ','#9a9a9c')],sizes:S4,
+  fabric:'۸۰٪ پنبه، ۲۰٪ پلی‌استر، داخل کرکی',comp:'۸۰٪ پنبه · ۲۰٪ پلی‌استر (دورس سه‌نخ، داخل کرکی)',
+  extra:[['وزن پارچه','۳۲۰ گرم'],['کلاه','دولایه با بند'],['جیب','جیب کانگورویی']],fit:'اورسایز',care:'شستشو با ماشین در آب سرد، پشت‌ورو',origin:'ایران',
+  desc:'هودی ضخیم با داخل کرکی برای روزهای سرد. پارچه بعد از شستشو آب نمی‌رود و شکلش را حفظ می‌کند.'},
+ {id:6,name:'بارانی کلاسیک',cat:'women',season:'autumn',type:'top',price:3650000,img:['1676716105765-e19fe6a01851','1633821879282-0c4e91f96232','1592327877233-90b9bfd92e48'],colors:[c('بژ','#c8ae86'),c('زیتونی','#6b6a45')],sizes:S4,
+  fabric:'۱۰۰٪ پنبه گاباردین ضدآب',comp:'۱۰۰٪ پنبه گاباردین با پوشش ضدآب',
+  extra:[['آستر','نیم‌آستر پنبه‌ای'],['بسته‌شدن','دکمه دوردیفه و کمربند'],['قد','تا زانو']],fit:'معمولی',care:'خشک‌شویی',origin:'ترکیه',
+  desc:'بارانی کلاسیک دوردیفه برای پاییز. پارچهٔ گاباردین فشرده باد و باران سبک را رد نمی‌کند.'},
+ {id:7,name:'کت مخمل‌کبریتی',cat:'men',season:'autumn',type:'top',price:2950000,img:['1594201658541-52380e1ca6df','1779870668916-f26bf1dd26cb'],colors:[c('قهوه‌ای روشن','#a07a52'),c('شکلاتی','#5a3b28')],sizes:{S:0,M:1,L:1,XL:1},
+  fabric:'۱۰۰٪ پنبه مخمل‌کبریتی',comp:'۱۰۰٪ پنبه مخمل‌کبریتی ۸ خط',
+  extra:[['آستر','ساتن پلی‌استر'],['جیب','۲ جیب روکار، ۱ جیب داخلی']],fit:'راسته',care:'شستشو با آب سرد، اتو از پشت پارچه',origin:'ایران',
+  desc:'کت اسپرت مخمل‌کبریتی که روی تی‌شرت یا پیراهن پوشیده می‌شود. رنگ‌های گرم پاییزی.'},
+ {id:8,name:'پیراهن فلانل چهارخانه',cat:'men',season:'autumn',type:'top',price:1390000,img:['1606724003282-df6ecad297ce','1611312449412-6cefac5dc3e4'],colors:[c('آبی و قهوه‌ای','#5d6f8c'),c('طوسی و مشکی','#4b4b4f')],sizes:S4,
+  fabric:'۱۰۰٪ پنبه فلانل',comp:'۱۰۰٪ پنبه فلانل برس‌خورده',
+  extra:[['وزن پارچه','۱۸۰ گرم'],['یقه','کلاسیک دکمه‌دار']],fit:'معمولی',care:'شستشو با ماشین در ۳۰ درجه',origin:'ایران',
+  desc:'پیراهن فلانل نرم و کمی ضخیم. هم تنها پوشیده می‌شود و هم باز، روی تی‌شرت.'},
+ {id:9,name:'کاردیگان بافت درشت',cat:'women',season:'autumn',type:'top',price:1750000,img:['1610288311735-39b7facbd095','1581497396202-5645e76a3a8e'],colors:[c('خردلی','#d9a73b'),c('قهوه‌ای','#7b5a43'),CREAM],sizes:{S:1,M:1,L:1,XL:0},
+  fabric:'۶۰٪ پنبه، ۴۰٪ اکریلیک',comp:'۶۰٪ پنبه · ۴۰٪ اکریلیک',
+  extra:[['نوع بافت','بافت درشت دستی‌نما'],['بسته‌شدن','دکمه چوبی']],fit:'آزاد',care:'دست‌شویی، خشک کردن به‌صورت خوابیده',origin:'ایران',
+  desc:'کاردیگان بافت درشت با دکمه‌های چوبی. برای شب‌های خنک پاییز.'},
+ {id:10,name:'کت جین',cat:'unisex',season:'autumn',type:'top',price:2250000,img:['1611312449408-fcece27cdbb7','1543076447-215ad9ba6923'],colors:[c('آبی روشن','#7b9cc2'),c('آبی تیره','#34507a')],sizes:S4,
+  fabric:'۱۰۰٪ پنبه دنیم',comp:'۱۰۰٪ پنبه دنیم ۱۲ اونس',
+  extra:[['رنگ‌شور','سنگ‌شور'],['دکمه','فلزی پرسی']],fit:'معمولی',care:'پشت‌ورو با آب سرد',origin:'ایران',
+  desc:'کت جین کلاسیک که با هر شلواری ست می‌شود. دنیم ضخیم و بادوام.'},
+ {id:11,name:'سویشرت یقه‌گرد',cat:'women',season:'autumn',type:'top',price:1590000,img:['1578587018452-892bacefd3f2'],colors:[c('نارنجی سوخته','#c8622f'),CREAM],sizes:S4,
+  fabric:'۸۰٪ پنبه، ۲۰٪ پلی‌استر',comp:'۸۰٪ پنبه · ۲۰٪ پلی‌استر (دورس)',
+  extra:[['وزن پارچه','۲۸۰ گرم'],['سرآستین و کمر','ریب کشی']],fit:'کمی گشاد',care:'شستشو با ماشین در آب سرد',origin:'ایران',
+  desc:'سویشرت ساده و راحت با رنگ گرم پاییزی.'},
+ {id:12,name:'پیراهن بافت میدی',cat:'women',season:'autumn',type:'top',price:1890000,img:['1789110520279-49e8a3a6fb91'],colors:[c('یاسی','#b7a6c9'),CREAM],sizes:{S:1,M:1,L:0,XL:0},
+  fabric:'۷۰٪ ویسکوز، ۳۰٪ پلی‌آمید',comp:'۷۰٪ ویسکوز · ۳۰٪ پلی‌آمید، بافت ریز',
+  extra:[['قد','میدی، زیر زانو'],['آستین','بلند']],fit:'جذب',care:'دست‌شویی با آب سرد',origin:'ترکیه',
+  desc:'پیراهن بافت ریز و کشی که فرم بدن را می‌گیرد. با بوت و پالتو ست می‌شود.'},
+ {id:13,name:'کاپشن چرم طبیعی',cat:'men',season:'autumn',type:'top',price:6900000,img:['1551028719-00167b16eac5','1521223890158-f9f7c3d5d504'],colors:[BLACK],sizes:{S:0,M:1,L:1,XL:1},
+  fabric:'چرم طبیعی گاوی',comp:'چرم طبیعی گاوی، تیماج نرم',
+  extra:[['ضخامت چرم','۰٫۹ تا ۱ میلی‌متر'],['آستر','ویسکوز'],['زیپ','فلزی']],fit:'جذب',care:'فقط خشک‌شویی مخصوص چرم',origin:'ایران (تبریز)',
+  desc:'کاپشن چرم دست‌دوز از چرم طبیعی تبریز. با گذشت زمان نرم‌تر و خوش‌فرم‌تر می‌شود.'},
+ {id:14,name:'تی‌شرت نخی یقه‌گرد',cat:'unisex',season:'summer',type:'top',price:690000,img:['1581655353564-df123a1eb820','1521572163474-6864f9cf17ab'],colors:[WHITE,BLACK,c('طوسی','#8e9096')],sizes:S4,
+  fabric:'۱۰۰٪ پنبه سی‌نخ',comp:'۱۰۰٪ پنبه شانه‌شده (سی‌نخ)',
+  extra:[['وزن پارچه','۱۸۰ گرم'],['یقه','گرد ریب‌دار']],fit:'معمولی',care:'شستشو با ماشین در ۳۰ درجه',origin:'ایران',
+  desc:'تی‌شرت سادهٔ روزمره با پنبهٔ نرم و خنک. بعد از شستشو آب نمی‌رود.'},
+ {id:15,name:'پیراهن کتان آستین‌بلند',cat:'men',season:'summer',type:'top',price:1450000,img:['1740711152088-88a009e877bb','1713881587420-113c1c43e28a'],colors:[c('آبی آسمانی','#9fb8d6'),WHITE],sizes:{S:1,M:1,L:1,XL:0},
+  fabric:'۱۰۰٪ کتان (لینن)',comp:'۱۰۰٪ کتان (لینن) شسته‌شده',
+  extra:[['وزن پارچه','۱۵۰ گرم'],['دکمه','صدفی']],fit:'آزاد',care:'شستشو با آب سرد، اتو با بخار',origin:'ایران',
+  desc:'پیراهن کتان خنک برای روزهای گرم. پارچهٔ کتان هوا را عبور می‌دهد و عرق را جذب می‌کند.'},
+ {id:16,name:'پیراهن تابستانی بلند',cat:'women',season:'summer',type:'top',price:1290000,old:1590000,img:['1496747611176-843222e1e57c','1542295669297-4d352b042bca'],colors:[WHITE,c('آبی','#3f5a7a')],sizes:S4,
+  fabric:'۱۰۰٪ پنبه وال',comp:'۱۰۰٪ پنبه وال',
+  extra:[['قد','ماکسی'],['آستر','دارد']],fit:'آزاد',care:'شستشو با دست',origin:'ایران',
+  desc:'پیراهن بلند و سبک از پنبهٔ وال، مناسب سفر و روزهای گرم.'},
+ {id:17,name:'شلوار کتان کمرکش',cat:'unisex',season:'summer',type:'bottom',price:1190000,img:['1789110520143-9f54f069b43f','1715233749622-3216fe49e682'],colors:[c('خردلی','#c9a03f'),CREAM],sizes:S4,
+  fabric:'۵۵٪ کتان، ۴۵٪ ویسکوز',comp:'۵۵٪ کتان · ۴۵٪ ویسکوز',
+  extra:[['کمر','کش و بند']],fit:'گشاد',care:'شستشو با آب سرد',origin:'ایران',
+  desc:'شلوار کتان سبک با کمر کشی، راحت برای خانه و بیرون.'},
+ {id:18,name:'شلوارک جین',cat:'women',season:'summer',type:'bottom',price:790000,img:['1591195853828-11db59a44f6b'],colors:[c('آبی روشن','#8aa7c9')],sizes:{S:1,M:1,L:1,XL:0},
+  fabric:'۱۰۰٪ پنبه دنیم',comp:'۱۰۰٪ پنبه دنیم',
+  extra:[['قد','کوتاه با لبهٔ ریش‌دار']],fit:'معمولی',care:'پشت‌ورو با آب سرد',origin:'ایران',
+  desc:'شلوارک جین ساده برای تابستان.'},
+ {id:19,name:'شلوار جین راسته',cat:'men',season:'all',type:'bottom',price:1690000,img:['1602293589930-45aad59ba3ab','1714729382668-7bc3bb261662'],colors:[c('ایندیگو','#2c3f6e'),c('آبی سنگ‌شور','#5b7aa6')],sizes:S4,
+  fabric:'۹۸٪ پنبه، ۲٪ الاستین',comp:'۹۸٪ پنبه · ۲٪ الاستین',
+  extra:[['وزن پارچه','۱۲ اونس'],['دکمه و زیپ','فلزی']],fit:'راسته',care:'پشت‌ورو با آب سرد',origin:'ایران',
+  desc:'جین راستهٔ همیشگی با کمی کش برای راحتی بیشتر.'},
+ {id:20,name:'شلوار چینو',cat:'men',season:'all',type:'bottom',price:1490000,img:['1473966968600-fa801b869a1a','1601561446301-fecc99036f4b'],colors:[c('قهوه‌ای','#8a6a4a'),NAVY],sizes:S4,
+  fabric:'۹۷٪ پنبه کجراه، ۳٪ اسپندکس',comp:'۹۷٪ پنبه کجراه · ۳٪ اسپندکس',
+  extra:[['جیب','۲ جیب جلو، ۲ جیب پشت']],fit:'جذب‌راسته',care:'شستشو با ماشین در ۳۰ درجه',origin:'ایران',
+  desc:'شلوار چینو که هم با کتونی و هم با کفش رسمی پوشیده می‌شود.'},
+ {id:21,name:'تی‌شرت اورسایز',cat:'men',season:'all',type:'top',price:840000,img:['1627225925683-1da7021732ea','1627225924765-552d49cf47ad'],colors:[BLACK,WHITE],sizes:{S:0,M:1,L:1,XL:1},
+  fabric:'۱۰۰٪ پنبه بیست‌نخ',comp:'۱۰۰٪ پنبه (بیست‌نخ، ضخیم)',
+  extra:[['وزن پارچه','۲۲۰ گرم'],['سرشانه','افتاده']],fit:'اورسایز',care:'شستشو با ماشین در ۳۰ درجه، پشت‌ورو',origin:'ایران',
+  desc:'تی‌شرت ضخیم و خوش‌فرم با سرشانهٔ افتاده.'},
+ {id:22,name:'بلوز آستین‌بلند ریب',cat:'unisex',season:'all',type:'top',price:990000,img:['1618354691551-44de113f0164','1620799140408-edc6dcb6d633'],colors:[BLACK,WHITE],sizes:S4,
+  fabric:'۱۰۰٪ پنبه ریب',comp:'۱۰۰٪ پنبه ریب کشی',
+  extra:[['وزن پارچه','۲۰۰ گرم'],['یقه','گرد']],fit:'معمولی',care:'شستشو با ماشین در ۳۰ درجه',origin:'ایران',
+  desc:'بلوز آستین‌بلند ساده که زیر کت و کاپشن یا تنها پوشیده می‌شود.'}
 ];
 
-const fa=n=>Number(n).toLocaleString('fa-IR');
+const SIZE_GUIDE={
+  top:{head:['سایز','دور سینه (cm)','قد لباس (cm)','سرشانه (cm)'],rows:[['S',96,68,44],['M',102,70,46],['L',108,72,48],['XL',114,74,50]]},
+  bottom:{head:['سایز','دور کمر (cm)','دور باسن (cm)','قد شلوار (cm)'],rows:[['S',76,96,100],['M',82,102,102],['L',88,108,104],['XL',94,114,106]]},
+  one:{head:['سایز','دور سر (cm)'],rows:[['فری‌سایز','۵۴ تا ۶۰']]}
+};
+
+const fa=n=>typeof n==='number'?n.toLocaleString('fa-IR'):n;
 const toman=n=>fa(n)+' تومان';
 const FREE=2000000, SHIP=95000;
 const $=s=>document.querySelector(s);
+const byId=id=>PRODUCTS.find(p=>p.id===id);
+const photo=(id,alt,w,h,eager)=>`<div class="ph"><img src="${IMG(id,w,h)}" alt="${alt}" ${eager?'':'loading="lazy"'} onerror="this.outerHTML='<span class=alt>'+this.alt+'</span>'"></div>`;
 
-let state={cat:'all',sort:'new',pick:{}};
+let view={cat:'all',season:'all',sort:'new',q:''};
+let pick={};
 let cart=[];
-try{cart=JSON.parse(localStorage.getItem('nakh-cart')||'[]')}catch(e){cart=[]}
+try{cart=JSON.parse(localStorage.getItem('nakh-cart')||'[]').filter(i=>byId(i.id))}catch(e){cart=[]}
 const save=()=>{try{localStorage.setItem('nakh-cart',JSON.stringify(cart))}catch(e){}};
 
-PRODUCTS.forEach(p=>state.pick[p.id]={color:0,size:Object.keys(p.sizes).find(s=>p.sizes[s])});
+function card(p){
+  const off=p.old?Math.round((1-p.price/p.old)*100):0;
+  return `<a class="card" href="#p${p.id}">
+    <div class="ph">${off?`<span class="tag">${fa(off)}٪ تخفیف</span>`:''}<span class="season">${SEASONS[p.season]}</span>${photo(p.img[0],p.name,500,625).replace(/^<div class="ph">|<\/div>$/g,'')}</div>
+    <h3>${p.name}</h3>
+    <p class="fabric">${p.fabric}</p>
+    <span class="price">${p.old?`<s>${fa(p.old)}</s>`:''}${toman(p.price)}</span>
+    <div class="dots">${p.colors.map(x=>`<span class="dot" style="background:${x.h}" title="${x.n}"></span>`).join('')}</div>
+  </a>`;
+}
+
+function home(){
+  $('#app').innerHTML=`
+  <section class="hero">
+    <h1>کالکشن <span>پاییز و زمستان</span> رسید</h1>
+    <p>کاپشن، پالتو، بافت و هودی کنار لباس‌های چهارفصل و تابستانی. جنس و مشخصات کامل هر لباس را در صفحهٔ محصول ببینید و تا ۷ روز امکان تعویض دارید.</p>
+  </section>
+  <section class="collections">
+    <button class="col" data-season="winter">${photo('1557418669-db3f781a58c0','زمستانی',600,375,1)}<span>زمستانی<small>کاپشن، پالتو، بافت</small></span></button>
+    <button class="col" data-season="autumn">${photo('1676716105765-e19fe6a01851','پاییزی',600,375,1)}<span>پاییزی<small>بارانی، کت، کاردیگان</small></span></button>
+    <button class="col" data-season="summer">${photo('1496747611176-843222e1e57c','تابستانی',600,375,1)}<span>تابستانی<small>کتان و پنبهٔ خنک</small></span></button>
+  </section>
+  <div class="band">
+    <span><b>ارسال رایگان</b> برای خرید بالای ۲٬۰۰۰٬۰۰۰ تومان</span>
+    <span><b>۷ روز</b> ضمانت تعویض سایز</span>
+    <span><b>پرداخت در محل</b> در تهران</span>
+  </div>
+  <div class="filters" id="filters">
+    <div class="row" role="toolbar" aria-label="دسته"><span class="lbl">دسته</span>
+      ${[['all','همه'],...Object.entries(CATS)].map(([k,v])=>`<button class="chip" data-cat="${k}" aria-pressed="${view.cat===k}">${v}</button>`).join('')}</div>
+    <div class="row" role="toolbar" aria-label="فصل"><span class="lbl">فصل</span>
+      ${[['all','همه فصل‌ها'],['winter','زمستانی'],['autumn','پاییزی'],['summer','تابستانی'],['all4','چهارفصل']].map(([k,v])=>`<button class="chip" data-season="${k}" aria-pressed="${view.season===k}">${v}</button>`).join('')}</div>
+    <div class="tools">
+      <input id="q" type="search" placeholder="جستجو: کاپشن، کتان، جین…" value="${view.q}" aria-label="جستجو">
+      <select id="sort" aria-label="مرتب‌سازی">
+        <option value="new">جدیدترین</option><option value="low">ارزان‌ترین</option><option value="high">گران‌ترین</option><option value="off">تخفیف‌دار</option>
+      </select>
+      <span class="found" id="found"></span>
+    </div>
+  </div>
+  <section class="grid" id="grid" aria-live="polite"></section>`;
+  $('#sort').value=view.sort;
+  $('#q').addEventListener('input',e=>{view.q=e.target.value.trim();renderGrid()});
+  $('#sort').addEventListener('change',e=>{view.sort=e.target.value;renderGrid()});
+  renderGrid();
+}
 
 function renderGrid(){
-  let list=PRODUCTS.filter(p=>state.cat==='all'||p.cat===state.cat);
-  if(state.sort==='low')list=[...list].sort((a,b)=>a.price-b.price);
-  if(state.sort==='high')list=[...list].sort((a,b)=>b.price-a.price);
-  $('#grid').innerHTML=list.map(p=>{
-    const pk=state.pick[p.id];
-    const off=p.old?Math.round((1-p.price/p.old)*100):0;
-    return `<article class="card">
-      <div class="pic">${off?`<span class="tag">${fa(off)}٪ تخفیف</span>`:''}${svg(p.shape,p.colors[pk.color])}</div>
-      <div class="meta"><h3>${p.name}</h3><span class="price">${p.old?`<s>${fa(p.old)}</s>`:''}${toman(p.price)}</span></div>
-      <p class="fabric">${p.fabric}</p>
-      <div class="dots">${p.colors.map((c,i)=>`<button class="dot" style="background:${c}" aria-label="رنگ ${fa(i+1)}" aria-pressed="${i===pk.color}" data-id="${p.id}" data-color="${i}"></button>`).join('')}</div>
-      <div class="sizes">${Object.entries(p.sizes).map(([s,ok])=>`<button class="size" ${ok?'':'disabled title="ناموجود"'} aria-pressed="${s===pk.size}" data-id="${p.id}" data-size="${s}">${s}</button>`).join('')}</div>
-      <button class="add" data-add="${p.id}">افزودن به سبد</button>
-    </article>`}).join('');
+  let list=PRODUCTS.filter(p=>(view.cat==='all'||p.cat===view.cat)
+    &&(view.season==='all'||p.season===(view.season==='all4'?'all':view.season))
+    &&(!view.q||(p.name+p.fabric+p.comp).includes(view.q)));
+  if(view.sort==='low')list=[...list].sort((a,b)=>a.price-b.price);
+  if(view.sort==='high')list=[...list].sort((a,b)=>b.price-a.price);
+  if(view.sort==='off')list=list.filter(p=>p.old);
+  if(view.sort==='new')list=[...list].reverse().sort((a,b)=>(a.season==='winter'||a.season==='autumn'?0:1)-(b.season==='winter'||b.season==='autumn'?0:1));
+  $('#found').textContent=fa(list.length)+' محصول';
+  $('#grid').innerHTML=list.length?list.map(card).join(''):'<p class="none">محصولی با این فیلترها پیدا نشد. یکی از فیلترها را بردارید.</p>';
 }
+
+function product(p){
+  if(!pick[p.id])pick[p.id]={color:0,size:Object.keys(p.sizes).find(s=>p.sizes[s]),img:0,q:1};
+  const k=pick[p.id], off=p.old?Math.round((1-p.price/p.old)*100):0, g=SIZE_GUIDE[p.type];
+  const specs=[['جنس و ترکیب پارچه',p.comp],...p.extra,['فیت (برش)',p.fit],['کشور تولید',p.origin],['نگهداری و شستشو',p.care]];
+  const rel=PRODUCTS.filter(x=>x.id!==p.id&&(x.season===p.season||x.cat===p.cat)).slice(0,4);
+  $('#app').innerHTML=`
+  <nav class="crumbs"><a href="#">خانه</a><span>/</span><a href="#" data-cat="${p.cat}">${CATS[p.cat]}</a><span>/</span><span>${p.name}</span></nav>
+  <section class="pd">
+    <div class="gallery">
+      <div id="main">${off?`<span class="tag">${fa(off)}٪ تخفیف</span>`:''}${photo(p.img[k.img],p.name,900,1125,1)}</div>
+      ${p.img.length>1?`<div class="thumbs">${p.img.map((im,i)=>`<button data-img="${i}" aria-pressed="${i===k.img}" aria-label="عکس ${fa(i+1)}">${photo(im,'',150,188,1)}</button>`).join('')}</div>`:''}
+    </div>
+    <div class="info">
+      <div class="pills"><span class="pill">${CATS[p.cat]}</span><span class="pill">${SEASONS[p.season]}</span><span class="pill">کد کالا: NK-${String(p.id).padStart(3,'0')}</span></div>
+      <h1>${p.name}</h1>
+      <span class="price">${p.old?`<s>${fa(p.old)}</s>`:''}${toman(p.price)}</span>
+      <div class="material">جنس: <b>${p.comp}</b></div>
+      <div class="opt"><h4>رنگ: <span>${p.colors[k.color].n}</span></h4>
+        <div class="swatches">${p.colors.map((x,i)=>`<button class="swatch" style="background:${x.h}" data-color="${i}" aria-pressed="${i===k.color}" aria-label="${x.n}" title="${x.n}"></button>`).join('')}</div></div>
+      <div class="opt"><h4>سایز: <span>${k.size||'ناموجود'}</span></h4>
+        <div class="sizes">${Object.entries(p.sizes).map(([s,ok])=>`<button class="size" ${ok?'':'disabled title="ناموجود"'} data-size="${s}" aria-pressed="${s===k.size}">${s}</button>`).join('')}</div></div>
+      <div class="buy">
+        <div class="qty"><button data-q="-1" aria-label="کم کردن">−</button><span>${fa(k.q)}</span><button data-q="1" aria-label="زیاد کردن">+</button></div>
+        <button class="add" data-add="${p.id}" ${k.size?'':'disabled'}>افزودن به سبد خرید</button>
+      </div>
+      <div class="perks"><div>ارسال ۲ تا ۴ روز کاری</div><div>۷ روز ضمانت تعویض سایز</div></div>
+      <div class="section"><h3>توضیحات</h3><p>${p.desc}</p></div>
+      <div class="section"><h3>مشخصات</h3><div class="tbl"><table class="specs">${specs.map(([a,b])=>`<tr><th>${a}</th><td>${b}</td></tr>`).join('')}</table></div></div>
+      <div class="section"><h3>جدول سایز</h3><div class="tbl"><table class="sizetbl"><tr>${g.head.map(h=>`<th>${h}</th>`).join('')}</tr>${g.rows.map(r=>`<tr>${r.map(v=>`<td>${fa(v)}</td>`).join('')}</tr>`).join('')}</table></div>
+        <p class="note" style="margin-top:6px">اندازه‌ها مربوط به خود لباس است، نه بدن. ممکن است ۱ تا ۲ سانتی‌متر اختلاف داشته باشد.</p></div>
+    </div>
+  </section>
+  <section class="related"><h2>شاید این‌ها را هم بپسندید</h2><div class="grid">${rel.map(card).join('')}</div></section>`;
+}
+
+function route(){
+  const m=location.hash.match(/^#p(\d+)$/);
+  const p=m&&byId(+m[1]);
+  p?product(p):home();
+}
+function rerenderProduct(){const m=location.hash.match(/^#p(\d+)$/);if(m)product(byId(+m[1]))}
 
 function renderCart(){
   const n=cart.reduce((a,i)=>a+i.q,0);
   $('#count').textContent=fa(n);
-  const sub=cart.reduce((a,i)=>a+i.q*PRODUCTS.find(p=>p.id===i.id).price,0);
+  const sub=cart.reduce((a,i)=>a+i.q*byId(i.id).price,0);
   const ship=!cart.length?0:(sub>=FREE?0:SHIP);
   $('#items').innerHTML=cart.length?cart.map((i,k)=>{
-    const p=PRODUCTS.find(x=>x.id===i.id);
-    return `<div class="item"><div class="thumb">${svg(p.shape,p.colors[i.color])}</div>
-      <div class="info"><b>${p.name}</b><span>سایز ${i.size} · ${toman(p.price)}</span></div>
+    const p=byId(i.id);
+    return `<div class="item"><a href="#p${p.id}">${photo(p.img[0],p.name,120,150)}</a>
+      <div class="meta"><b>${p.name}</b><span>${p.colors[i.color].n} · سایز ${i.size} · ${toman(p.price)}</span></div>
       <div class="qty"><button data-dec="${k}" aria-label="کم کردن">−</button><span>${fa(i.q)}</span><button data-inc="${k}" aria-label="زیاد کردن">+</button></div></div>`}).join('')
-    :'<p class="empty">سبد خرید شما خالی است.<br>از فهرست محصولات چیزی اضافه کنید.</p>';
+    :'<p class="empty">سبد خرید شما خالی است.<br>روی یک محصول بزنید و آن را به سبد اضافه کنید.</p>';
   $('#sub').textContent=toman(sub);
   $('#ship').textContent=!cart.length?'—':(ship?toman(ship):'رایگان');
   $('#total').textContent=toman(sub+ship);
@@ -225,29 +426,38 @@ function renderCart(){
   $('#checkout').disabled=!cart.length;
 }
 
-let tt;function toast(m){const t=$('#toast');t.textContent=m;t.hidden=false;clearTimeout(tt);tt=setTimeout(()=>t.hidden=true,2000)}
+let tt;function toast(m){const t=$('#toast');t.textContent=m;t.hidden=false;clearTimeout(tt);tt=setTimeout(()=>t.hidden=true,2200)}
 function openCart(o){$('#drawer').classList.toggle('open',o);$('#drawer').setAttribute('aria-hidden',!o);$('#scrim').hidden=!o}
+const curId=()=>{const m=location.hash.match(/^#p(\d+)$/);return m?+m[1]:0};
 
 document.addEventListener('click',e=>{
-  const b=e.target.closest('button');if(!b)return;
-  if(b.dataset.cat){state.cat=b.dataset.cat;document.querySelectorAll('.chip').forEach(c=>c.setAttribute('aria-pressed',c===b));renderGrid()}
-  else if(b.dataset.color){state.pick[b.dataset.id].color=+b.dataset.color;renderGrid()}
-  else if(b.dataset.size){state.pick[b.dataset.id].size=b.dataset.size;renderGrid()}
-  else if(b.dataset.add){
-    const id=+b.dataset.add,pk=state.pick[id];
-    const ex=cart.find(i=>i.id===id&&i.color===pk.color&&i.size===pk.size);
-    ex?ex.q++:cart.push({id,color:pk.color,size:pk.size,q:1});
-    save();renderCart();toast('به سبد خرید اضافه شد');
+  const b=e.target.closest('button,a[data-cat]');if(!b)return;
+  const d=b.dataset;
+  if(d.cat){e.preventDefault();view.cat=d.cat;view.season='all';if(location.hash){location.hash='';}else home();}
+  else if(d.season){view.season=d.season;view.cat=view.cat;home();if(b.classList.contains('col'))$('#filters').scrollIntoView({behavior:'smooth'})}
+  else if(d.img){pick[curId()].img=+d.img;rerenderProduct()}
+  else if(d.color){pick[curId()].color=+d.color;rerenderProduct()}
+  else if(d.size){pick[curId()].size=d.size;rerenderProduct()}
+  else if(d.q){const k=pick[curId()];k.q=Math.max(1,Math.min(10,k.q+ +d.q));rerenderProduct()}
+  else if(d.add){
+    const id=+d.add,k=pick[id];
+    const ex=cart.find(i=>i.id===id&&i.color===k.color&&i.size===k.size);
+    ex?ex.q+=k.q:cart.push({id,color:k.color,size:k.size,q:k.q});
+    save();renderCart();toast(`${byId(id).name} به سبد خرید اضافه شد`);
   }
-  else if(b.dataset.inc){cart[b.dataset.inc].q++;save();renderCart()}
-  else if(b.dataset.dec){const i=cart[b.dataset.dec];i.q--;if(!i.q)cart.splice(b.dataset.dec,1);save();renderCart()}
+  else if(d.inc){cart[d.inc].q++;save();renderCart()}
+  else if(d.dec){const i=cart[d.dec];i.q--;if(!i.q)cart.splice(d.dec,1);save();renderCart()}
   else if(b.id==='openCart')openCart(true);
   else if(b.id==='closeCart')openCart(false);
-  else if(b.id==='checkout'){toast('این یک نمونه‌کار است؛ پرداخت واقعی انجام نمی‌شود.')}
+  else if(b.id==='checkout')toast('این یک نمونه‌کار است و پرداخت واقعی انجام نمی‌شود.');
 });
+$('#items').addEventListener('click',e=>{if(e.target.closest('a'))openCart(false)});
 $('#scrim').addEventListener('click',()=>openCart(false));
 document.addEventListener('keydown',e=>{if(e.key==='Escape')openCart(false)});
-$('#sort').addEventListener('change',e=>{state.sort=e.target.value;renderGrid()});
+window.addEventListener('hashchange',()=>{route();window.scrollTo(0,0)});
 
-renderGrid();renderCart();
+route();renderCart();
 </script>
+
+</body>
+</html>
