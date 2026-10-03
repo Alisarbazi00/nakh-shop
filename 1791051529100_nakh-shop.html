@@ -1,0 +1,253 @@
+<title>فروشگاه پوشاک نخ</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;600;800;900&family=IBM+Plex+Mono:wght@500&display=swap">
+<style>
+/* Layout: RTL storefront — compact masthead with indigo-dye band, filter row, product grid, slide-in cart drawer */
+:root{
+  --bg:#f3f4f7; --surface:#ffffff; --fg:#191c2b; --muted:#5f6478;
+  --line:#dcdfe8; --accent:#26307a; --accent-ink:#ffffff; --madder:#b23a2e;
+  --swatch-bg:#e8eaf1;
+  --f-display:"Vazirmatn",Tahoma,sans-serif; --f-body:"Vazirmatn",Tahoma,sans-serif;
+  --f-mono:"IBM Plex Mono",ui-monospace,monospace;
+  --r:10px;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#12141d; --surface:#1b1e2a; --fg:#eceef5; --muted:#a2a7bb; --line:#2d3142;
+  --accent:#8f9bff; --accent-ink:#10132a; --madder:#ff8a7a; --swatch-bg:#232737; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#12141d; --surface:#1b1e2a; --fg:#eceef5; --muted:#a2a7bb; --line:#2d3142;
+  --accent:#8f9bff; --accent-ink:#10132a; --madder:#ff8a7a; --swatch-bg:#232737; color-scheme:dark}
+
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--fg);font-family:var(--f-body);font-size:15px;line-height:1.7;direction:rtl;padding-inline:16px;padding-block:0 48px}
+.wrap{max-width:1180px;margin-inline:auto}
+button{font:inherit;color:inherit;cursor:pointer}
+button:focus-visible,select:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+
+header.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;background:var(--bg);border-bottom:1px solid var(--line);margin-inline:-16px;padding-inline:16px}
+.top .wrap{display:flex;align-items:center;justify-content:space-between;gap:16px;padding-block:14px}
+.logo{font-family:var(--f-display);font-weight:900;font-size:1.6rem;letter-spacing:-.5px;display:flex;align-items:baseline;gap:8px}
+.logo small{font-weight:400;font-size:.8rem;color:var(--muted)}
+.cart-btn{display:flex;align-items:center;gap:8px;border:1px solid var(--line);background:var(--surface);border-radius:999px;padding:6px 14px}
+.cart-btn .count{background:var(--accent);color:var(--accent-ink);border-radius:999px;min-width:24px;height:24px;display:grid;place-items:center;font-size:.8rem;font-weight:600}
+
+.hero{margin-block:28px 8px;display:grid;grid-template-columns:1.2fr 1fr;gap:24px;align-items:end}
+.hero h1{font-family:var(--f-display);font-weight:900;font-size:clamp(2rem,5vw,3.4rem);line-height:1.25;margin:0;text-wrap:balance}
+.hero h1 span{color:var(--accent)}
+.hero p{color:var(--muted);margin:0;max-width:44ch}
+.band{margin-block:20px 28px;display:flex;flex-wrap:wrap;gap:8px 24px;padding:12px 18px;border-radius:var(--r);background:var(--accent);color:var(--accent-ink);font-size:.9rem}
+.band b{font-weight:800}
+
+.filters{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin-bottom:20px}
+.chip{border:1px solid var(--line);background:transparent;border-radius:999px;padding:5px 16px;font-size:.9rem}
+.chip[aria-pressed="true"]{background:var(--fg);color:var(--bg);border-color:var(--fg)}
+.filters .sort{margin-inline-start:auto;display:flex;align-items:center;gap:8px;color:var(--muted);font-size:.9rem}
+select{font:inherit;color:var(--fg);background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:4px 10px}
+
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:20px}
+.card{display:flex;flex-direction:column;gap:10px;min-width:0}
+.pic{position:relative;aspect-ratio:4/5;max-width:100%;background:var(--swatch-bg);border-radius:var(--r);display:grid;place-items:center;overflow:hidden}
+.pic svg{width:72%;height:auto;transition:transform .35s ease}
+.card:hover .pic svg{transform:translateY(-4px) rotate(-1.5deg)}
+.tag{position:absolute;top:10px;right:10px;background:var(--madder);color:#fff;font-size:.75rem;font-weight:600;padding:2px 10px;border-radius:999px}
+.meta{display:flex;justify-content:space-between;align-items:baseline;gap:8px}
+.meta h3{margin:0;font-size:1rem;font-weight:600}
+.fabric{font-size:.82rem;color:var(--muted);margin:0}
+.price{font-weight:800;white-space:nowrap}
+.price s{font-weight:400;color:var(--muted);font-size:.8rem;margin-inline-end:6px}
+.dots{display:flex;gap:6px}
+.dot{width:18px;height:18px;border-radius:50%;border:2px solid var(--surface);outline:1px solid var(--line);padding:0}
+.dot[aria-pressed="true"]{outline:2px solid var(--fg)}
+.sizes{display:flex;gap:6px;flex-wrap:wrap}
+.size{font-family:var(--f-mono);font-size:.78rem;min-width:36px;padding:3px 6px;border:1px solid var(--line);border-radius:6px;background:var(--surface)}
+.size[aria-pressed="true"]{border-color:var(--accent);color:var(--accent);font-weight:600}
+.size:disabled{opacity:.35;text-decoration:line-through;cursor:not-allowed}
+.add{border:0;background:var(--accent);color:var(--accent-ink);border-radius:8px;padding:9px;font-weight:600}
+.add:hover{filter:brightness(1.1)}
+
+/* drawer */
+.scrim{position:fixed;inset:0;background:rgb(10 12 25 / .45);z-index:40}
+.drawer{position:fixed;top:0;bottom:0;left:0;width:min(400px,100%);background:var(--surface);z-index:50;display:flex;flex-direction:column;
+  padding:calc(16px + env(safe-area-inset-top,0px)) 20px calc(16px + env(safe-area-inset-bottom,0px));transform:translateX(-100%);transition:transform .3s ease;box-shadow:0 0 40px rgb(0 0 0 / .25)}
+.drawer.open{transform:none}
+.drawer h2{margin:0 0 8px;font-size:1.2rem;display:flex;justify-content:space-between;align-items:center}
+.x{border:0;background:none;font-size:1.4rem;line-height:1}
+.items{flex:1;overflow-y:auto;display:flex;flex-direction:column;gap:14px;padding-block:10px}
+.item{display:grid;grid-template-columns:64px 1fr auto;gap:12px;align-items:center}
+.item .thumb{background:var(--swatch-bg);border-radius:8px;aspect-ratio:1;display:grid;place-items:center}
+.item .thumb svg{width:70%}
+.item .info{min-width:0;font-size:.88rem}
+.item .info b{display:block;font-weight:600}
+.item .info span{color:var(--muted);font-size:.8rem}
+.qty{display:flex;align-items:center;gap:4px}
+.qty button{width:26px;height:26px;border:1px solid var(--line);background:var(--bg);border-radius:6px;line-height:1}
+.empty{color:var(--muted);text-align:center;margin-top:40px}
+.sum{border-top:1px solid var(--line);padding-top:12px;display:flex;flex-direction:column;gap:6px;font-size:.9rem}
+.sum div{display:flex;justify-content:space-between}
+.sum .total{font-weight:800;font-size:1.05rem}
+.ship-bar{height:6px;border-radius:99px;background:var(--line);overflow:hidden}
+.ship-bar i{display:block;height:100%;background:var(--accent);transition:width .3s}
+.checkout{margin-top:6px;border:0;background:var(--fg);color:var(--bg);border-radius:8px;padding:12px;font-weight:600}
+.checkout:disabled{opacity:.4;cursor:not-allowed}
+.note{font-size:.82rem;color:var(--muted)}
+
+.toast{position:fixed;bottom:calc(20px + env(safe-area-inset-bottom,0px));left:50%;transform:translateX(-50%);background:var(--fg);color:var(--bg);padding:8px 18px;border-radius:999px;font-size:.9rem;z-index:60}
+footer{margin-top:56px;border-top:1px solid var(--line);padding-top:20px;color:var(--muted);font-size:.85rem;display:flex;flex-wrap:wrap;gap:8px 24px;justify-content:space-between}
+
+@media (max-width:720px){.hero{grid-template-columns:1fr}.filters .sort{margin-inline-start:0;width:100%}}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+
+<header class="top">
+  <div class="wrap">
+    <div class="logo">نخ <small>پوشاک نخی و کتان</small></div>
+    <button class="cart-btn" id="openCart" aria-label="باز کردن سبد خرید">سبد خرید <span class="count" id="count">۰</span></button>
+  </div>
+</header>
+
+<main class="wrap">
+  <section class="hero">
+    <h1>لباس‌هایی از <span>پنبه و کتان</span> که هر روز می‌پوشید</h1>
+    <p>دوخت ایران، پارچهٔ صددرصد طبیعی. سایزها را از جدول هر محصول انتخاب کنید و تا ۷ روز امکان تعویض دارید.</p>
+  </section>
+
+  <div class="band">
+    <span><b>ارسال رایگان</b> برای خرید بالای ۲٬۰۰۰٬۰۰۰ تومان</span>
+    <span><b>۷ روز</b> ضمانت تعویض سایز</span>
+    <span><b>پرداخت در محل</b> در تهران</span>
+  </div>
+
+  <div class="filters" role="toolbar" aria-label="دسته‌بندی">
+    <button class="chip" data-cat="all" aria-pressed="true">همه</button>
+    <button class="chip" data-cat="men" aria-pressed="false">مردانه</button>
+    <button class="chip" data-cat="women" aria-pressed="false">زنانه</button>
+    <button class="chip" data-cat="unisex" aria-pressed="false">یونی‌سکس</button>
+    <label class="sort" for="sort">مرتب‌سازی:
+      <select id="sort">
+        <option value="new">جدیدترین</option>
+        <option value="low">ارزان‌ترین</option>
+        <option value="high">گران‌ترین</option>
+      </select>
+    </label>
+  </div>
+
+  <section class="grid" id="grid" aria-live="polite"></section>
+
+  <footer>
+    <span>فروشگاه نخ · نمونه‌کار طراحی سایت</span>
+    <span>پشتیبانی: ۰۲۱-۱۲۳۴۵۶۷۸ · شنبه تا پنجشنبه ۹ تا ۱۸</span>
+  </footer>
+</main>
+
+<div class="scrim" id="scrim" hidden></div>
+<aside class="drawer" id="drawer" aria-label="سبد خرید" aria-hidden="true">
+  <h2>سبد خرید <button class="x" id="closeCart" aria-label="بستن">×</button></h2>
+  <div class="items" id="items"></div>
+  <div class="sum">
+    <div class="ship-bar"><i id="shipBar" style="width:0"></i></div>
+    <span class="note" id="shipNote"></span>
+    <div><span>جمع کالاها</span><span id="sub">۰ تومان</span></div>
+    <div><span>هزینهٔ ارسال</span><span id="ship">—</span></div>
+    <div class="total"><span>مبلغ قابل پرداخت</span><span id="total">۰ تومان</span></div>
+    <button class="checkout" id="checkout">ادامهٔ خرید و پرداخت</button>
+  </div>
+</aside>
+<div class="toast" id="toast" hidden></div>
+
+<script>
+const SHAPES={
+  tee:'<path d="M60 30 L85 20 Q100 36 115 20 L140 30 L175 62 L155 84 L140 74 L140 192 L60 192 L60 74 L45 84 L25 62 Z"/>',
+  shirt:'<path d="M60 30 L85 18 L100 40 L115 18 L140 30 L172 70 L168 150 L150 150 L142 80 L142 196 L58 196 L58 80 L50 150 L32 150 L28 70 Z"/><path d="M100 40 V196" stroke="rgb(0 0 0 / .25)" stroke-width="2" fill="none"/><g fill="rgb(255 255 255 / .7)"><circle cx="100" cy="70" r="3"/><circle cx="100" cy="100" r="3"/><circle cx="100" cy="130" r="3"/><circle cx="100" cy="160" r="3"/></g>',
+  hoodie:'<path d="M62 40 Q100 -4 138 40 L176 72 L172 156 L150 156 L146 92 L146 198 L54 198 L54 92 L50 156 L28 156 L24 72 Z"/><path d="M78 40 Q100 66 122 40" stroke="rgb(0 0 0 / .3)" stroke-width="3" fill="none"/><rect x="72" y="140" width="56" height="30" rx="6" fill="rgb(0 0 0 / .15)"/>',
+  pants:'<path d="M60 18 L140 18 L152 202 L112 202 L100 82 L88 202 L48 202 Z"/><path d="M60 32 H140" stroke="rgb(0 0 0 / .25)" stroke-width="2"/>',
+  dress:'<path d="M80 18 L120 18 L126 72 L168 204 L32 204 L74 72 Z"/><path d="M74 72 H126" stroke="rgb(0 0 0 / .25)" stroke-width="3"/>',
+  coat:'<path d="M64 24 L86 16 L100 44 L114 16 L136 24 L172 62 L166 176 L148 176 L144 96 L148 208 L52 208 L56 96 L52 176 L34 176 L28 62 Z"/><path d="M100 44 V208" stroke="rgb(0 0 0 / .25)" stroke-width="2"/><path d="M86 16 L100 44 L94 90 M114 16 L100 44 L106 90" stroke="rgb(0 0 0 / .2)" stroke-width="2" fill="none"/>'
+};
+const svg=(shape,color)=>`<svg viewBox="0 0 200 220" aria-hidden="true"><g fill="${color}">${SHAPES[shape]}</g></svg>`;
+
+const PRODUCTS=[
+  {id:1,name:'تی‌شرت نخی ساده',fabric:'پنبه ۱۸۰ گرم، یقه گرد',cat:'unisex',shape:'tee',price:690000,colors:['#f2f2ee','#1f2333','#7d8f6a'],sizes:{S:1,M:1,L:1,XL:1}},
+  {id:2,name:'هودی دورس',fabric:'دورس پنبه، داخل کرکی',cat:'unisex',shape:'hoodie',price:1890000,old:2290000,colors:['#3d4a8c','#a8a29a','#2b2b2b'],sizes:{S:0,M:1,L:1,XL:1}},
+  {id:3,name:'پیراهن کتان آستین بلند',fabric:'کتان شسته، دکمه صدفی',cat:'men',shape:'shirt',price:1450000,colors:['#c9d6e8','#e9e1d3','#5b6b4e'],sizes:{S:1,M:1,L:1,XL:0}},
+  {id:4,name:'شلوار جین راسته',fabric:'دنیم ۱۲ اونس، رنگ ایندیگو',cat:'men',shape:'pants',price:1690000,colors:['#2c3f6e','#4f6694','#1c1c22'],sizes:{S:1,M:1,L:1,XL:1}},
+  {id:5,name:'مانتو کتان بلند',fabric:'کتان، جیب‌دار، کمربند پارچه‌ای',cat:'women',shape:'coat',price:2350000,colors:['#b9a88a','#2e3a52','#8a4b3c'],sizes:{S:1,M:1,L:0,XL:1}},
+  {id:6,name:'پیراهن زنانه تابستانی',fabric:'ویسکوز نخی، بندی',cat:'women',shape:'dress',price:1290000,old:1590000,colors:['#c55a46','#e7d9bd','#3f5a7a'],sizes:{S:1,M:1,L:1,XL:0}},
+  {id:7,name:'شلوار کتان گشاد',fabric:'کتان، کمر کش',cat:'women',shape:'pants',price:1190000,colors:['#d8cdb8','#55606e','#9c7b5c'],sizes:{S:1,M:1,L:1,XL:1}},
+  {id:8,name:'تی‌شرت اورسایز طرح‌دار',fabric:'پنبه ۲۲۰ گرم، چاپ سیلک',cat:'men',shape:'tee',price:840000,colors:['#2b2b2b','#d9d4c7','#8c2f2a'],sizes:{S:0,M:1,L:1,XL:1}}
+];
+
+const fa=n=>Number(n).toLocaleString('fa-IR');
+const toman=n=>fa(n)+' تومان';
+const FREE=2000000, SHIP=95000;
+const $=s=>document.querySelector(s);
+
+let state={cat:'all',sort:'new',pick:{}};
+let cart=[];
+try{cart=JSON.parse(localStorage.getItem('nakh-cart')||'[]')}catch(e){cart=[]}
+const save=()=>{try{localStorage.setItem('nakh-cart',JSON.stringify(cart))}catch(e){}};
+
+PRODUCTS.forEach(p=>state.pick[p.id]={color:0,size:Object.keys(p.sizes).find(s=>p.sizes[s])});
+
+function renderGrid(){
+  let list=PRODUCTS.filter(p=>state.cat==='all'||p.cat===state.cat);
+  if(state.sort==='low')list=[...list].sort((a,b)=>a.price-b.price);
+  if(state.sort==='high')list=[...list].sort((a,b)=>b.price-a.price);
+  $('#grid').innerHTML=list.map(p=>{
+    const pk=state.pick[p.id];
+    const off=p.old?Math.round((1-p.price/p.old)*100):0;
+    return `<article class="card">
+      <div class="pic">${off?`<span class="tag">${fa(off)}٪ تخفیف</span>`:''}${svg(p.shape,p.colors[pk.color])}</div>
+      <div class="meta"><h3>${p.name}</h3><span class="price">${p.old?`<s>${fa(p.old)}</s>`:''}${toman(p.price)}</span></div>
+      <p class="fabric">${p.fabric}</p>
+      <div class="dots">${p.colors.map((c,i)=>`<button class="dot" style="background:${c}" aria-label="رنگ ${fa(i+1)}" aria-pressed="${i===pk.color}" data-id="${p.id}" data-color="${i}"></button>`).join('')}</div>
+      <div class="sizes">${Object.entries(p.sizes).map(([s,ok])=>`<button class="size" ${ok?'':'disabled title="ناموجود"'} aria-pressed="${s===pk.size}" data-id="${p.id}" data-size="${s}">${s}</button>`).join('')}</div>
+      <button class="add" data-add="${p.id}">افزودن به سبد</button>
+    </article>`}).join('');
+}
+
+function renderCart(){
+  const n=cart.reduce((a,i)=>a+i.q,0);
+  $('#count').textContent=fa(n);
+  const sub=cart.reduce((a,i)=>a+i.q*PRODUCTS.find(p=>p.id===i.id).price,0);
+  const ship=!cart.length?0:(sub>=FREE?0:SHIP);
+  $('#items').innerHTML=cart.length?cart.map((i,k)=>{
+    const p=PRODUCTS.find(x=>x.id===i.id);
+    return `<div class="item"><div class="thumb">${svg(p.shape,p.colors[i.color])}</div>
+      <div class="info"><b>${p.name}</b><span>سایز ${i.size} · ${toman(p.price)}</span></div>
+      <div class="qty"><button data-dec="${k}" aria-label="کم کردن">−</button><span>${fa(i.q)}</span><button data-inc="${k}" aria-label="زیاد کردن">+</button></div></div>`}).join('')
+    :'<p class="empty">سبد خرید شما خالی است.<br>از فهرست محصولات چیزی اضافه کنید.</p>';
+  $('#sub').textContent=toman(sub);
+  $('#ship').textContent=!cart.length?'—':(ship?toman(ship):'رایگان');
+  $('#total').textContent=toman(sub+ship);
+  $('#shipBar').style.width=Math.min(100,sub/FREE*100)+'%';
+  $('#shipNote').textContent=!cart.length?'':(sub>=FREE?'ارسال این سفارش رایگان است.':`${toman(FREE-sub)} دیگر تا ارسال رایگان`);
+  $('#checkout').disabled=!cart.length;
+}
+
+let tt;function toast(m){const t=$('#toast');t.textContent=m;t.hidden=false;clearTimeout(tt);tt=setTimeout(()=>t.hidden=true,2000)}
+function openCart(o){$('#drawer').classList.toggle('open',o);$('#drawer').setAttribute('aria-hidden',!o);$('#scrim').hidden=!o}
+
+document.addEventListener('click',e=>{
+  const b=e.target.closest('button');if(!b)return;
+  if(b.dataset.cat){state.cat=b.dataset.cat;document.querySelectorAll('.chip').forEach(c=>c.setAttribute('aria-pressed',c===b));renderGrid()}
+  else if(b.dataset.color){state.pick[b.dataset.id].color=+b.dataset.color;renderGrid()}
+  else if(b.dataset.size){state.pick[b.dataset.id].size=b.dataset.size;renderGrid()}
+  else if(b.dataset.add){
+    const id=+b.dataset.add,pk=state.pick[id];
+    const ex=cart.find(i=>i.id===id&&i.color===pk.color&&i.size===pk.size);
+    ex?ex.q++:cart.push({id,color:pk.color,size:pk.size,q:1});
+    save();renderCart();toast('به سبد خرید اضافه شد');
+  }
+  else if(b.dataset.inc){cart[b.dataset.inc].q++;save();renderCart()}
+  else if(b.dataset.dec){const i=cart[b.dataset.dec];i.q--;if(!i.q)cart.splice(b.dataset.dec,1);save();renderCart()}
+  else if(b.id==='openCart')openCart(true);
+  else if(b.id==='closeCart')openCart(false);
+  else if(b.id==='checkout'){toast('این یک نمونه‌کار است؛ پرداخت واقعی انجام نمی‌شود.')}
+});
+$('#scrim').addEventListener('click',()=>openCart(false));
+document.addEventListener('keydown',e=>{if(e.key==='Escape')openCart(false)});
+$('#sort').addEventListener('change',e=>{state.sort=e.target.value;renderGrid()});
+
+renderGrid();renderCart();
+</script>
